@@ -17,7 +17,17 @@ const path = Astro.url.pathname.replace(`/${current}`, `/${other}`)
 			<HeaderLink href={`/${lang}/blog`}>{t(lang, "blog")}</HeaderLink>
 			<HeaderLink href={`/${lang}/about`}>{t(lang, "about")}</HeaderLink>
 		</div>
-		<a href={path}>{other.toUpperCase()}</a>
+		<div>
+		<center>
+			<div class="switch">
+				<input id="language-toggle" class="check-toggle check-toggle-round-flat" type="checkbox" checked={lang === 'pt-br'}>
+				<label for="language-toggle" onclick={`window.location.href='${path}'`}></label>
+				<span class="on">{current.toUpperCase()}</span>
+				<span class="off">{other.toUpperCase()}</span>
+			</div>
+ 		</center>
+		</div>
+
 	</nav>
 </header>
 
@@ -62,5 +72,94 @@ const path = Astro.url.pathname.replace(`/${current}`, `/${other}`)
 		.social-links {
 			display: none;
 		}
+	}
+	.switch {
+		position: relative;
+		display: inline-block;
+		margin: 0 5px;
+	}
+
+	.switch > span {
+		position: absolute;
+		top: 10px;
+		pointer-events: none;
+		font-size: 12px;
+		font-weight: bold;
+		text-transform: uppercase;
+		text-shadow: 0 1px 0 rgba(0, 0, 0, .06);
+		width: 50%;
+		text-align: center;
+	}
+
+	.switch > span.on {
+		left: 0;
+		padding-left: 2px;
+		color: var(--accent);
+	}
+
+	.switch > span.off {
+		right: 0;
+		padding-right: 4px;
+		color: #fff;
+	}
+
+	input.check-toggle-round-flat:checked ~ .on {
+		color: #fff;
+	}
+
+	input.check-toggle-round-flat:checked ~ .off {
+		color: var(--accent);
+	}
+
+	.check-toggle {
+		position: absolute;
+		margin-left: -9999px;
+		visibility: hidden;
+	}
+
+	.check-toggle + label {
+		display: block;
+		position: relative;
+		cursor: pointer;
+		outline: none;
+		user-select: none;
+	}
+
+	input.check-toggle-round-flat + label {
+		padding: 2px;
+		width: 97px;
+		height: 35px;
+		background: linear-gradient(to right, var(--accent), var(--accent-dark));
+		border-radius: 60px;
+	}
+
+	input.check-toggle-round-flat + label:before, 
+	input.check-toggle-round-flat + label:after {
+		display: block;
+		position: absolute;
+		content: "";
+	}
+
+	input.check-toggle-round-flat + label:before {
+		top: 2px;
+		left: 2px;
+		bottom: 2px;
+		right: 2px;
+		background: linear-gradient(to right, var(--accent), var(--accent-dark));
+		border-radius: 60px;
+	}
+
+	input.check-toggle-round-flat + label:after {
+		top: 4px;
+		left: 4px;
+		bottom: 4px;
+		width: 48px;
+		background-color: #fff;
+		border-radius: 52px;
+		transition: margin 0.2s;
+	}
+
+	input.check-toggle-round-flat:checked + label:after {
+		margin-left: 44px;
 	}
 </style>

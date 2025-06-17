@@ -1,6 +1,6 @@
 export const translations = {
   'pt-br': { 
-    home: "Início", 
+    home: "Home", 
     about: "Sobre", 
     blog: "Blog",
     contact: "Contato",
