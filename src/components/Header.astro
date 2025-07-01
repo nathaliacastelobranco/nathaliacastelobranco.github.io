@@ -1,5 +1,4 @@
 ---
-import HeaderLink from './HeaderLink.astro';
 import { SITE_TITLE } from '../consts';
 import { t } from '../i18n.ts';
 import { getCollection } from 'astro:content';
@@ -33,22 +32,54 @@ if (isBlogPost) {
 		path = `/${other}/blog`;
 	}
 }
+
+// Função para verificar se um link está ativo
+const pathname = Astro.url.pathname;
+const isActive = (href: string) => {
+	// Para home page
+	if (href === `/${lang}/` && (pathname === `/${lang}/` || pathname === `/${lang}`)) {
+		return true;
+	}
+	// Para outras páginas
+	return pathname.startsWith(href) && href !== `/${lang}/`;
+};
 ---
 
 <header>
 	<nav>
-		<h2><a href={`/${lang}/`}>{SITE_TITLE}</a></h2>
+		<!-- <h2><a href={`/${lang}/`}>{SITE_TITLE}</a></h2> -->
+		<div class="mobile-controls">
+			<button class="hamburger" id="hamburger">
+				<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+					<path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+				</svg>
+			</button>
+		</div>
 		<div class="internal-links">
-			<HeaderLink href={`/${lang}/`}>{t(lang, "home")}</HeaderLink>
-			<HeaderLink href={`/${lang}/blog`}>{t(lang, "blog")}</HeaderLink>
-			<HeaderLink href={`/${lang}/about`}>{t(lang, "about")}</HeaderLink>
+			<a href={`/${lang}/`} class={isActive(`/${lang}/`) ? 'active' : ''}>{t(lang, "home")}</a>
+			<a href={`/${lang}/blog`} class={isActive(`/${lang}/blog`) ? 'active' : ''}>{t(lang, "blog")}</a>
+			<a href={`/${lang}/about`} class={isActive(`/${lang}/about`) ? 'active' : ''}>{t(lang, "about")}</a>
 		</div>
 		<a href={path} class="lang-toggle">
 			{current.toUpperCase()}
 		</a>
-
+		<div class="mobile-menu" id="mobile-menu">
+			<a href={`/${lang}/`} class={isActive(`/${lang}/`) ? 'active' : ''}>{t(lang, "home")}</a>
+			<a href={`/${lang}/blog`} class={isActive(`/${lang}/blog`) ? 'active' : ''}>{t(lang, "blog")}</a>
+			<a href={`/${lang}/about`} class={isActive(`/${lang}/about`) ? 'active' : ''}>{t(lang, "about")}</a>
+		</div>
 	</nav>
 </header>
+
+<script>
+	const hamburger = document.getElementById('hamburger');
+	const mobileMenu = document.getElementById('mobile-menu');
+
+	hamburger?.addEventListener('click', () => {
+		hamburger.classList.toggle('active');
+		mobileMenu?.classList.toggle('active');
+	});
+</script>
 
 
 
@@ -75,21 +106,68 @@ if (isBlogPost) {
 	}
 	nav a {
 		padding: 1em 0.5em;
-		color: var(--black);
+		color: rgb(var(--black));
 		border-bottom: 4px solid transparent;
 		text-decoration: none;
+		transition: border-bottom-color 0.3s ease;
 	}
 	nav a.active {
 		text-decoration: none;
-		border-bottom-color: var(--accent);
+		border-bottom-color: var(--tag-gradient);
+		font-weight: 600;
 	}
 	.social-links,
 	.social-links a {
 		display: flex;
 	}
-	@media (max-width: 720px) {
+	.mobile-controls {
+		display: none;
+		align-items: center;
+		order: -1;
+	}
+	.hamburger {
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 0.5rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.hamburger svg {
+		color: var(--black);
+		transition: 0.3s;
+	}
+	.hamburger:hover svg {
+		color: var(--accent);
+	}
+	.mobile-menu {
+		display: none;
+		position: absolute;
+		top: 100%;
+		left: 0;
+		right: 0;
+		background: white;
+		box-shadow: 0 2px 8px rgba(var(--black), 10%);
+		flex-direction: column;
+		padding: 1rem;
+	}
+	.mobile-menu.active {
+		display: flex;
+	}
+	@media (max-width: 768px) {
 		.social-links {
 			display: none;
+		}
+		.internal-links {
+			display: none;
+		}
+		.mobile-controls {
+			display: flex;
+		}
+		nav {
+			position: relative;
+			justify-content: space-between;
 		}
 	}
 	.lang-toggle {
@@ -100,5 +178,13 @@ if (isBlogPost) {
 	}
 	.lang-toggle:hover {
 		background-color: rgba(var(--accent), 0.1);
+	}
+	@media (min-width: 769px) {
+		.mobile-controls {
+			display: none;
+		}
+		.mobile-menu {
+			display: none !important;
+		}
 	}
 </style>
