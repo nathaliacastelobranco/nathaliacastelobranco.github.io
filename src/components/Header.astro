@@ -2,11 +2,37 @@
 import HeaderLink from './HeaderLink.astro';
 import { SITE_TITLE } from '../consts';
 import { t } from '../i18n.ts';
+import { getCollection } from 'astro:content';
 
 const { lang } = Astro.props;
 const current = lang;
 const other = lang === 'pt-br' ? 'en' : 'pt-br';
-const path = Astro.url.pathname.replace(`/${current}`, `/${other}`)
+
+// Verificar se estamos em um post de blog
+const isBlogPost = Astro.url.pathname.includes('/blog/') && Astro.url.pathname.split('/').length > 3;
+let path = Astro.url.pathname.replace(`/${current}`, `/${other}`);
+
+if (isBlogPost) {
+	// Extrair o slug do post atual
+	const currentSlug = Astro.url.pathname.split('/').pop();
+	
+	try {
+		// Verificar se existe um post correspondente no outro idioma
+		const otherPosts = await getCollection('blog', (entry) => entry.id.startsWith(other + '/'));
+		const correspondingPost = otherPosts.find(post => {
+			const postSlug = post.id.split('/').pop();
+			return postSlug === currentSlug;
+		});
+		
+		// Se não encontrar post correspondente, redirecionar para home do blog
+		if (!correspondingPost) {
+			path = `/${other}/blog`;
+		}
+	} catch (error) {
+		// Em caso de erro, redirecionar para home do blog
+		path = `/${other}/blog`;
+	}
+}
 ---
 
 <header>
@@ -17,16 +43,9 @@ const path = Astro.url.pathname.replace(`/${current}`, `/${other}`)
 			<HeaderLink href={`/${lang}/blog`}>{t(lang, "blog")}</HeaderLink>
 			<HeaderLink href={`/${lang}/about`}>{t(lang, "about")}</HeaderLink>
 		</div>
-		<div>
-		<center>
-			<div class="switch">
-				<input id="language-toggle" class="check-toggle check-toggle-round-flat" type="checkbox" checked={lang === 'pt-br'}>
-				<label for="language-toggle" onclick={`window.location.href='${path}'`}></label>
-				<span class="on">{current.toUpperCase()}</span>
-				<span class="off">{other.toUpperCase()}</span>
-			</div>
- 		</center>
-		</div>
+		<a href={path} class="lang-toggle">
+			{current.toUpperCase()}
+		</a>
 
 	</nav>
 </header>
@@ -73,93 +92,13 @@ const path = Astro.url.pathname.replace(`/${current}`, `/${other}`)
 			display: none;
 		}
 	}
-	.switch {
-		position: relative;
-		display: inline-block;
-		margin: 0 5px;
-	}
-
-	.switch > span {
-		position: absolute;
-		top: 10px;
-		pointer-events: none;
-		font-size: 12px;
+	.lang-toggle {
 		font-weight: bold;
-		text-transform: uppercase;
-		text-shadow: 0 1px 0 rgba(0, 0, 0, .06);
-		width: 50%;
-		text-align: center;
+		padding: 0.5em 1em;
+		border-radius: 4px;
+		transition: background-color 0.2s;
 	}
-
-	.switch > span.on {
-		left: 0;
-		padding-left: 2px;
-		color: var(--accent);
-	}
-
-	.switch > span.off {
-		right: 0;
-		padding-right: 4px;
-		color: #fff;
-	}
-
-	input.check-toggle-round-flat:checked ~ .on {
-		color: #fff;
-	}
-
-	input.check-toggle-round-flat:checked ~ .off {
-		color: var(--accent);
-	}
-
-	.check-toggle {
-		position: absolute;
-		margin-left: -9999px;
-		visibility: hidden;
-	}
-
-	.check-toggle + label {
-		display: block;
-		position: relative;
-		cursor: pointer;
-		outline: none;
-		user-select: none;
-	}
-
-	input.check-toggle-round-flat + label {
-		padding: 2px;
-		width: 97px;
-		height: 35px;
-		background: linear-gradient(to right, var(--accent), var(--accent-dark));
-		border-radius: 60px;
-	}
-
-	input.check-toggle-round-flat + label:before, 
-	input.check-toggle-round-flat + label:after {
-		display: block;
-		position: absolute;
-		content: "";
-	}
-
-	input.check-toggle-round-flat + label:before {
-		top: 2px;
-		left: 2px;
-		bottom: 2px;
-		right: 2px;
-		background: linear-gradient(to right, var(--accent), var(--accent-dark));
-		border-radius: 60px;
-	}
-
-	input.check-toggle-round-flat + label:after {
-		top: 4px;
-		left: 4px;
-		bottom: 4px;
-		width: 48px;
-		background-color: #fff;
-		border-radius: 52px;
-		transition: margin 0.2s;
-	}
-
-	input.check-toggle-round-flat:checked + label:after {
-		margin-left: 44px;
+	.lang-toggle:hover {
+		background-color: rgba(var(--accent), 0.1);
 	}
 </style>
