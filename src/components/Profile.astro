@@ -9,13 +9,13 @@ const content = {
   'en': {
     summary: "I'm an engineer passionate about Artificial Intelligence, with a strong focus on NLP, with hands-on experience applying AI to solve complex problems, generate insights, and build innovative solutions. I work at the intersection of data, language, and technology, always aiming for real-world impact through automation and applied intelligence.",
     techTitle: 'Main Technologies',
-    jobTitle: 'Data Scientist',
+    jobTitle: 'Data Analyst and Engineer',
     certifications: 'Certifications'
   },
   'pt-br': {
     summary: 'Engenheira apaixonada por Inteligência Artificial, com foco especial em NLP, tenho experiência prática aplicando IA para resolver problemas complexos, gerar insights e construir soluções inovadoras. Atuo na interseção entre dados, linguagem e tecnologia, sempre buscando impacto real por meio de automação e inteligência aplicada.',
     techTitle: 'Principais Tecnologias',
-    jobTitle: 'Cientista de dados',
+    jobTitle: 'Analista e Engenheira de dados',
     certifications: 'Certificações'
   }
 };
@@ -45,8 +45,9 @@ const currentContent = content[lang as keyof typeof content] || content['en'];
       <div class="certifications">
         <h3 class="title-color">{currentContent.certifications}</h3>
         <div>
-          <img width="180" src="/astronomer-certification-for-apache-airflow-3-funda.png">
-          
+          <a href="https://www.credly.com/badges/54c0f470-be7b-4962-b5ba-f2bcdd13ee21/public_url" target="_blank">
+          <img width="180" src="/astronomer-certification-for-apache-airflow-3-funda.png" />
+          </a>
         </div>
       </div>
       <div class="social-links">

@@ -23,6 +23,11 @@ $$
 \text{Acurácia} = \frac{TP + TN}{TP + TN + FP + FN}
 $$
 
+```python
+import pandas as pd
+
+pd.read_csv()
+```
 #### Precisão
 $$
 \text{Precisão} = \frac{TP}{TP + FP}
