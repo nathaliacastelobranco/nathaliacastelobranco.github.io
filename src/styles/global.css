@@ -6,8 +6,13 @@
 
 :root {
 	--accent: 0, 78, 146;
-	--accent-hex: #004e92;
+	--accent-hex: #0D3B66;
+	--light-accent-hex: #145385;
 	--accent-dark: #000428;
+	--orange-hex: #F4A261;
+	--light-orange-hex: #F7B789 ;
+	--purple-hex: #6A4E93;
+	--light-purple-hex: #9277B8;
 	--black: 15, 18, 25;
 	--gray: 96, 115, 159;
 	--gray-light: 229, 233, 240;

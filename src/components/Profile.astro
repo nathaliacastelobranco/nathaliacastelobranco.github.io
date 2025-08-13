@@ -36,9 +36,7 @@ const currentContent = content[lang as keyof typeof content] || content['en'];
         <div class="tech-list">
           <span class="tech-tag">Python</span>
           <span class="tech-tag">SQL</span>
-          <span class="tech-tag">NLP</span>
-          <span class="tech-tag">LLM</span>
-          <span class="tech-tag">Agents</span>
+          <span class="tech-tag">Google Cloud</span>
           <span class="tech-tag">Vector Databases</span>
         </div>
       </div>
@@ -95,6 +93,7 @@ const currentContent = content[lang as keyof typeof content] || content['en'];
     border-radius: 50%;
     object-fit: cover;
     border: 4px solid rgba(255, 255, 255, 0.2);
+    display: none;
   }
 
   .profile-content {
@@ -127,7 +126,7 @@ const currentContent = content[lang as keyof typeof content] || content['en'];
   }
 
   .tech-tag {
-    background: var(--tag-gradient);
+    background: var(--accent-hex);
     color: #fafafa;
     padding: 0.5rem 1rem;
     border-radius: 20px;
@@ -144,12 +143,12 @@ const currentContent = content[lang as keyof typeof content] || content['en'];
   }
 
   .social-links a {
-    color: var(--black);
+    color: var(--accent-hex);
     transition: color 0.3s ease;
   }
 
   .social-links a:hover {
-    color: var(--accent);
+    color: var(--light-purple-hex);
   }
 
   @media (max-width: 768px) {

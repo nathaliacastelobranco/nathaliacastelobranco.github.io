@@ -5,7 +5,9 @@ export const translations = {
     blog: "Blog",
     contact: "Contato",
     footer: "Todos os direitos reservados.",
-    'about-page': "Sobre mim"
+    'about-page': "Sobre mim",
+    projects: "Projetos",
+    blog_description: "Alguns artigos estão apenas em inglês, troque o idioma para acessá-los."
   },
   en: { 
     home: "Home", 
@@ -13,7 +15,10 @@ export const translations = {
     blog: "Blog",
     contact: "Contact",
     footer: "All rights reserved.",
-    'about-page': "About me"
+    'about-page': "About me",
+    projects: "Projects",
+    blog_description: "Some articles were write only in Portuguese, switch language to acess."
+
   }
 };
 

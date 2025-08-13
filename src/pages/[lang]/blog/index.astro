@@ -6,6 +6,7 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../../../consts';
 import { getCollection } from 'astro:content';
 import FormattedDate from '../../../components/FormattedDate.astro';
 import { Image } from 'astro:assets';
+import { t } from '../../../i18n';
 
 export function getStaticPaths() {
   return [
@@ -27,6 +28,7 @@ const posts = await getCollection('blog', (entry) => entry.id.startsWith(lang + 
 		<style>
 			main {
 				width: 960px;
+				padding: 1em 1em;
 			}
 			ul {
 				display: flex;
@@ -77,6 +79,13 @@ const posts = await getCollection('blog', (entry) => entry.id.startsWith(lang + 
 			ul a:hover img {
 				box-shadow: var(--box-shadow);
 			}
+			.blog-description {
+				font-size: 0.7em;
+				width: 100%;
+				text-align: center;
+				color: var(--light-purple-hex);
+
+			}
 			@media (max-width: 720px) {
 				ul {
 					gap: 0.5em;
@@ -116,6 +125,7 @@ const posts = await getCollection('blog', (entry) => entry.id.startsWith(lang + 
 					}
 				</ul>
 			</section>
+			<p class="blog-description">{t(lang, "blog_description")}</p>
 		</main>
 		<Footer lang={ lang } />
 	</body>
