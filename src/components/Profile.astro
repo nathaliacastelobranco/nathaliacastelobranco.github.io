@@ -9,12 +9,14 @@ const content = {
   'en': {
     summary: "I'm an engineer passionate about Artificial Intelligence, with a strong focus on NLP, with hands-on experience applying AI to solve complex problems, generate insights, and build innovative solutions. I work at the intersection of data, language, and technology, always aiming for real-world impact through automation and applied intelligence.",
     techTitle: 'Main Technologies',
-    jobTitle: 'Data Scientist'
+    jobTitle: 'Data Scientist',
+    certifications: 'Certifications'
   },
   'pt-br': {
     summary: 'Engenheira apaixonada por Inteligência Artificial, com foco especial em NLP, tenho experiência prática aplicando IA para resolver problemas complexos, gerar insights e construir soluções inovadoras. Atuo na interseção entre dados, linguagem e tecnologia, sempre buscando impacto real por meio de automação e inteligência aplicada.',
     techTitle: 'Principais Tecnologias',
-    jobTitle: 'Cientista de dados'
+    jobTitle: 'Cientista de dados',
+    certifications: 'Certificações'
   }
 };
 
@@ -38,6 +40,13 @@ const currentContent = content[lang as keyof typeof content] || content['en'];
           <span class="tech-tag">SQL</span>
           <span class="tech-tag">Google Cloud</span>
           <span class="tech-tag">Vector Databases</span>
+        </div>
+      </div>
+      <div class="certifications">
+        <h3 class="title-color">{currentContent.certifications}</h3>
+        <div>
+          <img width="180" src="/src/assets/astronomer-certification-for-apache-airflow-3-funda.png">
+          
         </div>
       </div>
       <div class="social-links">
@@ -116,6 +125,11 @@ const currentContent = content[lang as keyof typeof content] || content['en'];
 
   .technologies h3 {
     margin: 0 0 1rem 0;
+    font-size: 1.3rem;
+  }
+
+  .certifications h3 {
+    padding-top: 1.5em;
     font-size: 1.3rem;
   }
 

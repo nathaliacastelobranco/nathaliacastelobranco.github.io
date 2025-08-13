@@ -2,7 +2,7 @@
 title: 'Métricas de avaliação de modelos de classificação'
 description: 'Lorem ipsum dolor sit amet'
 pubDate: 'Jun 16 2025'
-# heroImage: '../../../assets/1.jpg'
+heroImage: '../../../assets/01-data-modeling.jpg'
 lang: 'pt-br'
 ---
 
