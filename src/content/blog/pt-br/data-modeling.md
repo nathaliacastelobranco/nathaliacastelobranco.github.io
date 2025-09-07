@@ -10,11 +10,13 @@ Os conceitos aqui definidos não esgotam o tema de modelagem de dados.
 
 ### Definição
 
+É ncessário realizar um levantamento de requisitos para entender a necessidade do negócio. Este levantamentoe é idealmente realizado com todos os stakeholders presentes.
 
 
 ### Tipos de modelos
 
 #### **Modelo Conceitual**
+Diagrama Entidade Relacionamento (ER)
 Entidades, relacionamentos
 
 #### **Modelo Lógico**
