@@ -48,6 +48,9 @@ const isActive = (href: string) => {
 <header>
 	<nav>
 		<!-- <h2><a href={`/${lang}/`}>{SITE_TITLE}</a></h2> -->
+		<a href={`/${lang}/`} class="logo-link">
+            <img src="/logo.svg" alt={`Logotipo ${SITE_TITLE}`} class="site-logo" />
+        </a>
 		<div class="mobile-controls">
 			<button class="hamburger" id="hamburger">
 				<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -85,6 +88,9 @@ const isActive = (href: string) => {
 
 <style>
 	header {
+		position: sticky;
+    	top: 0;
+		z-index: 50; 
 		margin: 0;
 		padding: 0 1em;
 		background: white;
@@ -100,9 +106,12 @@ const isActive = (href: string) => {
 		text-decoration: none;
 	}
 	nav {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
+		display: grid;
+        align-items: center;
+		grid-template-columns: 1fr auto 1fr;
+		/* display: flex;
+		align-items: center; */
+		/* justify-content: space-between; */
 		/* padding: 1em 0.5em; */
 	}
 	nav a {
@@ -117,6 +126,30 @@ const isActive = (href: string) => {
 		border-bottom-color: var(--light-accent-hex);
 		font-weight: 600;
 	}
+	.logo-link {
+        justify-self: start; /* Alinha o link do logo à esquerda da primeira coluna do grid */
+        display: flex; /* Para garantir que a imagem dentro do link esteja bem alinhada */
+        align-items: center;
+        padding: 0.5em 0; /* Ajuste o padding conforme a necessidade */
+        border-bottom: none; /* Remove a borda padrão dos links */
+    }
+
+    /* NOVO: Estilos para a imagem do logotipo */
+    .site-logo {
+        height: 40px; /* **AJUSTE A ALTURA DO SEU LOGO AQUI** */
+        width: auto; /* Mantém a proporção */
+    }
+
+    /* Garante que o link do logo não tenha o sublinhado/borda dos outros links */
+    .logo-link:hover, .logo-link.active {
+        border-bottom: none;
+    }
+
+	.internal-links {
+		display: flex; 
+        justify-content: center;
+    }
+
 	.social-links,
 	.social-links a {
 		display: flex;
@@ -160,6 +193,16 @@ const isActive = (href: string) => {
 		.social-links {
 			display: none;
 		}
+		.logo-link {
+            justify-self: unset; /* Reseta o alinhamento do grid */
+            order: 0; /* Ordem padrão */
+            flex-grow: 1; /* Permite que ele cresça e centralize */
+            justify-content: center; /* Centraliza o conteúdo (o logo) dentro dele */
+        }
+        .site-logo {
+            height: 35px; /* Altura um pouco menor no mobile, se desejar */
+        }
+
 		.internal-links {
 			display: none;
 		}
@@ -172,6 +215,7 @@ const isActive = (href: string) => {
 		}
 	}
 	.lang-toggle {
+		justify-self: end;
 		font-weight: bold;
 		/* padding: 0.5em 1em; */
 		border-radius: 4px;
@@ -181,6 +225,20 @@ const isActive = (href: string) => {
 		background-color: rgba(var(--accent), 0.1);
 	}
 	@media (min-width: 769px) {
+		nav {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+        }
+		h2 {
+            justify-self: unset; /* Reseta o alinhamento do grid */
+        }
+		/* .internal-links {
+            display: none;
+        }
+        .mobile-controls {
+            display: flex;
+        } */
 		.mobile-controls {
 			display: none;
 		}
