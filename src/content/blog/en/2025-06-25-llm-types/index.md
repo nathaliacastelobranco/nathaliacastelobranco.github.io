@@ -3,7 +3,7 @@ title: 'What is the difference between Base Models and Instruct-Led Models in LL
 description: 'Lorem ipsum dolor sit amet'
 pubDate: 'Jun 25 2025'
 updatedDate: 'Sep 11 2025'
-heroImage: '../../../assets/04-ilustra-dog.jpg'
+heroImage: './04-ilustra-dog.jpg'
 lang: 'en'
 ---
 

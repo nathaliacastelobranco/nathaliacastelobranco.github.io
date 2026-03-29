@@ -2,7 +2,7 @@
 title: "Como os LLMs funcionam internamente"
 description: "Entenda como grandes modelos de linguagem geram texto e respondem perguntas."
 pubDate: "March 16 2026"
-heroImage: "../../../assets/04-ilustra-dog.jpg"
+heroImage: "./04-ilustra-dog.jpg"
 lang: "pt-br"
 ---
 
