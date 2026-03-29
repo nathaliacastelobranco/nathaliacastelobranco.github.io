@@ -1,25 +1,19 @@
-// @ts-check
-import { defineConfig } from "astro/config";
-import mdx from "@astrojs/mdx";
-import sitemap from "@astrojs/sitemap";
-import rehypePrettyCode from "rehype-pretty-code";
-import rehypeMermaid from "rehype-mermaid";
+import { defineConfig } from 'astro/config';
+import mdx from '@astrojs/mdx';
+import sitemap from '@astrojs/sitemap';
+import tailwind from "@astrojs/tailwind";
+import { autoNewTabExternalLinks } from './src/autoNewTabExternalLinks';
+
+import partytown from "@astrojs/partytown";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://nathaliacastelobranco.github.io",
-  integrations: [mdx(), sitemap()],
+  site: 'https://devolio.devaradise.com',
+  integrations: [mdx(), sitemap(), tailwind(), partytown()],
   markdown: {
-    syntaxHighlight: {
-      type: "shiki",
-      excludeLangs: ["mermaid", "math"],
-    },
-    rehypePlugins: [
-      rehypePrettyCode,
-      [
-        rehypeMermaid,
-        { strategy: "img-svg", dark: false, colorScheme: "forest" },
-      ],
-    ],
-  },
+    extendDefaultPlugins: true,
+    rehypePlugins: [[autoNewTabExternalLinks, {
+      domain: 'localhost:4321'
+    }]]
+  }
 });
