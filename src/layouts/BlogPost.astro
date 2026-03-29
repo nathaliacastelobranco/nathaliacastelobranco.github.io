@@ -9,6 +9,7 @@ import { Image } from 'astro:assets';
 type Props = CollectionEntry<'blog'>['data'];
 
 const { title, description, pubDate, updatedDate, heroImage, lang } = Astro.props;
+
 ---
 
 <html lang={ lang }>
@@ -61,7 +62,7 @@ const { title, description, pubDate, updatedDate, heroImage, lang } = Astro.prop
 		<main>
 			<article>
 				<div class="hero-image">
-					{heroImage && <Image width={2000} height={400}  src={heroImage} alt="" />}
+					{heroImage && <Image width={800} height={400}  src={heroImage} alt="" />}
 				</div>
 				<div class="prose">
 					<div class="title">
@@ -86,5 +87,6 @@ const { title, description, pubDate, updatedDate, heroImage, lang } = Astro.prop
 			</article>
 		</main>
 		<Footer lang={lang}/>
+
 	</body>
-</html>
+	</html>

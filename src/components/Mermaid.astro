@@ -1,0 +1,14 @@
+---
+const { chart } = Astro.props;
+---
+
+<div class="mermaid">{chart}</div>
+
+<script type="module" is:inline>
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: "default"
+  });
+</script>
