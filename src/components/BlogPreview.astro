@@ -1,0 +1,102 @@
+---
+import { getCollection } from 'astro:content';
+import { t } from '../i18n.ts';
+import FormattedDate from './FormattedDate.astro';
+
+interface Props {
+	lang: 'en' | 'pt-br';
+}
+
+const { lang } = Astro.props;
+
+const posts = (await getCollection('blog', (entry) => entry.id.startsWith(lang + '/')))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.slice(0, 3);
+---
+
+<section id="blog" class="section">
+	<div class="eyebrow eyebrow--cyan mono">{t(lang, 'blogEyebrow')}</div>
+	<h2>{t(lang, 'blogTitle')}</h2>
+
+	<div class="posts-list">
+		{posts.map((post) => (
+			<a href={`/${lang}/blog/${post.id.replace(lang + '/', '')}/`} class="post-row">
+				<div class="post-row-copy">
+					<h3>{post.data.title}</h3>
+					<p>{post.data.description}</p>
+				</div>
+				<div class="post-row-date mono"><FormattedDate date={post.data.pubDate} /></div>
+			</a>
+		))}
+		<div class="posts-list-end"></div>
+	</div>
+
+	{posts.length > 0 && (
+		<a href={`/${lang}/blog`} class="view-all mono">{t(lang, 'viewAllPosts')}</a>
+	)}
+</section>
+
+<style>
+	h2 {
+		font-size: 2.1em;
+		margin: 0 0 40px;
+	}
+
+	.posts-list {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.post-row {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 24px;
+		padding: 26px 0;
+		border-top: 1px solid var(--border);
+		color: var(--text);
+	}
+
+	.post-row:hover h3 {
+		color: var(--accent-pink);
+	}
+
+	.post-row-copy h3 {
+		font-size: 1.2em;
+		margin: 0 0 8px;
+		transition: color 0.2s;
+	}
+
+	.post-row-copy p {
+		font-size: 14px;
+		color: var(--text-dim);
+		margin: 0;
+		max-width: 560px;
+		line-height: 1.5;
+	}
+
+	.post-row-date {
+		font-size: 12px;
+		color: var(--text-dim);
+		white-space: nowrap;
+	}
+
+	.posts-list-end {
+		border-top: 1px solid var(--border);
+	}
+
+	.view-all {
+		display: inline-block;
+		margin-top: 32px;
+		font-size: 13px;
+		color: var(--accent-pink);
+	}
+
+	@media (max-width: 600px) {
+		.post-row {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 8px;
+		}
+	}
+</style>

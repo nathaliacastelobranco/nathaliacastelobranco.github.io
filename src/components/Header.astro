@@ -1,249 +1,191 @@
 ---
 import { SITE_TITLE } from '../consts';
 import { t } from '../i18n.ts';
-import { getCollection } from 'astro:content';
+import ThemeToggle from './ThemeToggle.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
 
 const { lang } = Astro.props;
-const current = lang;
-const other = lang === 'pt-br' ? 'en' : 'pt-br';
-
-// Verificar se estamos em um post de blog
-const isBlogPost = Astro.url.pathname.includes('/blog/') && Astro.url.pathname.split('/').length > 3;
-let path = Astro.url.pathname.replace(`/${current}`, `/${other}`);
-
-if (isBlogPost) {
-	// Extrair o slug do post atual
-	const currentSlug = Astro.url.pathname.split('/').pop();
-	
-	try {
-		// Verificar se existe um post correspondente no outro idioma
-		const otherPosts = await getCollection('blog', (entry) => entry.id.startsWith(other + '/'));
-		const correspondingPost = otherPosts.find(post => {
-			const postSlug = post.id.split('/').pop();
-			return postSlug === currentSlug;
-		});
-		
-		// Se não encontrar post correspondente, redirecionar para home do blog
-		if (!correspondingPost) {
-			path = `/${other}/blog`;
-		}
-	} catch (error) {
-		// Em caso de erro, redirecionar para home do blog
-		path = `/${other}/blog`;
-	}
-}
-
-// Função para verificar se um link está ativo
 const pathname = Astro.url.pathname;
-const isActive = (href: string) => {
-	// Para home page
-	if (href === `/${lang}/` && (pathname === `/${lang}/` || pathname === `/${lang}`)) {
-		return true;
-	}
-	// Para outras páginas
-	return pathname.startsWith(href) && href !== `/${lang}/`;
-};
+
+const isHome = pathname === `/${lang}/` || pathname === `/${lang}`;
+const isBlog = pathname.startsWith(`/${lang}/blog`);
+const isProjects = pathname.startsWith(`/${lang}/projects`);
+
+const navLinks = [
+	{ href: `/${lang}/`, label: t(lang, 'home'), active: isHome },
+	{ href: `/${lang}/#about`, label: t(lang, 'about'), active: false },
+	{ href: `/${lang}/#projects`, label: t(lang, 'projects'), active: isProjects },
+	{ href: `/${lang}/blog`, label: t(lang, 'blog'), active: isBlog },
+	{ href: `/${lang}/#contact`, label: t(lang, 'contact'), active: false },
+];
 ---
+
+<div class="floating-controls">
+	<ThemeToggle />
+	<LanguageSwitcher lang={lang} />
+</div>
 
 <header>
 	<nav>
-		<!-- <h2><a href={`/${lang}/`}>{SITE_TITLE}</a></h2> -->
-		<a href={`/${lang}/`} class="logo-link">
-            <img src="/logo.svg" alt={`Logotipo ${SITE_TITLE}`} class="site-logo" />
-        </a>
-		<div class="mobile-controls">
-			<button class="hamburger" id="hamburger">
-				<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-					<path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-				</svg>
-			</button>
-		</div>
-		<div class="internal-links">
-			<a href={`/${lang}/`} class={isActive(`/${lang}/`) ? 'active' : ''}>{t(lang, "home")}</a>
-			<a href={`/${lang}/blog`} class={isActive(`/${lang}/blog`) ? 'active' : ''}>{t(lang, "blog")}</a>
-			<a href={`/${lang}/about`} class={isActive(`/${lang}/about`) ? 'active' : ''}>{t(lang, "about")}</a>
-		</div>
-		<a href={path} class="lang-toggle">
-			{current.toUpperCase()}
+		<a href={`/${lang}/`} class="logo-link" aria-label={SITE_TITLE}>
+			<span class="logo-ring">
+				<span class="logo-ring-inner"></span>
+			</span>
+			NCB
 		</a>
-		<div class="mobile-menu" id="mobile-menu">
-			<a href={`/${lang}/`} class={isActive(`/${lang}/`) ? 'active' : ''}>{t(lang, "home")}</a>
-			<a href={`/${lang}/blog`} class={isActive(`/${lang}/blog`) ? 'active' : ''}>{t(lang, "blog")}</a>
-			<a href={`/${lang}/about`} class={isActive(`/${lang}/about`) ? 'active' : ''}>{t(lang, "about")}</a>
+		<button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+			<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+				<path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+			</svg>
+		</button>
+		<div class="internal-links" id="internal-links">
+			{navLinks.map((link) => (
+				<a href={link.href} class={link.active ? 'active' : ''}>{link.label}</a>
+			))}
 		</div>
 	</nav>
 </header>
 
 <script>
 	const hamburger = document.getElementById('hamburger');
-	const mobileMenu = document.getElementById('mobile-menu');
+	const menu = document.getElementById('internal-links');
 
 	hamburger?.addEventListener('click', () => {
-		hamburger.classList.toggle('active');
-		mobileMenu?.classList.toggle('active');
+		const expanded = hamburger.getAttribute('aria-expanded') === 'true';
+		hamburger.setAttribute('aria-expanded', String(!expanded));
+		menu?.classList.toggle('open');
 	});
 </script>
 
-
-
 <style>
+	.floating-controls {
+		position: fixed;
+		top: 50%;
+		right: 20px;
+		transform: translateY(-50%);
+		z-index: 200;
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+	}
+
+	@media (max-width: 720px) {
+		.floating-controls {
+			top: auto;
+			bottom: 16px;
+			right: 16px;
+			transform: none;
+			flex-direction: row;
+		}
+	}
+
 	header {
 		position: sticky;
-    	top: 0;
-		z-index: 50; 
+		top: 0;
+		z-index: 50;
 		margin: 0;
-		padding: 0 1em;
-		background: white;
-		box-shadow: 0 2px 8px rgba(var(--black), 5%);
-	}
-	h2 {
-		margin: 0;
-		font-size: 1em;
+		background: var(--nav-bg);
+		backdrop-filter: blur(10px);
+		border-bottom: 1px solid var(--border);
 	}
 
-	h2 a,
-	h2 a.active {
-		text-decoration: none;
-	}
 	nav {
-		display: grid;
-        align-items: center;
-		grid-template-columns: 1fr auto 1fr;
-		/* display: flex;
-		align-items: center; */
-		/* justify-content: space-between; */
-		/* padding: 1em 0.5em; */
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 18px 48px;
+		max-width: 1200px;
+		margin: 0 auto;
 	}
-	nav a {
-		padding: 1em 0.5em;
-		color: rgb(var(--black));
-		border-bottom: 4px solid transparent;
-		text-decoration: none;
-		transition: border-bottom-color 0.3s ease;
-	}
-	nav a.active {
-		text-decoration: none;
-		border-bottom-color: var(--light-accent-hex);
-		font-weight: 600;
-	}
+
 	.logo-link {
-        justify-self: start; /* Alinha o link do logo à esquerda da primeira coluna do grid */
-        display: flex; /* Para garantir que a imagem dentro do link esteja bem alinhada */
-        align-items: center;
-        padding: 0.5em 0; /* Ajuste o padding conforme a necessidade */
-        border-bottom: none; /* Remove a borda padrão dos links */
-    }
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		font-family: var(--font-mono);
+		font-size: 15px;
+		font-weight: 600;
+		letter-spacing: 0.02em;
+		color: var(--text);
+	}
 
-    /* NOVO: Estilos para a imagem do logotipo */
-    .site-logo {
-        height: 40px; /* **AJUSTE A ALTURA DO SEU LOGO AQUI** */
-        width: auto; /* Mantém a proporção */
-    }
+	.logo-ring {
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
+		border: 1.5px solid var(--accent-pink);
+		display: inline-flex;
+		position: relative;
+	}
 
-    /* Garante que o link do logo não tenha o sublinhado/borda dos outros links */
-    .logo-link:hover, .logo-link.active {
-        border-bottom: none;
-    }
+	.logo-ring-inner {
+		position: absolute;
+		inset: 4px;
+		border-radius: 50%;
+		border: 1px solid var(--accent-pink-dim);
+	}
 
 	.internal-links {
-		display: flex; 
-        justify-content: center;
-    }
-
-	.social-links,
-	.social-links a {
 		display: flex;
+		gap: 32px;
+		font-family: var(--font-mono);
+		font-size: 13px;
+		letter-spacing: 0.03em;
+		text-transform: uppercase;
 	}
-	.mobile-controls {
-		display: none;
-		align-items: center;
-		order: -1;
+
+	.internal-links a {
+		color: var(--text-dim);
 	}
+
+	.internal-links a.active {
+		color: var(--text);
+	}
+
 	.hamburger {
+		display: none;
 		background: none;
 		border: none;
 		cursor: pointer;
 		padding: 0.5rem;
-		display: flex;
 		align-items: center;
 		justify-content: center;
+		color: var(--text);
 	}
-	.hamburger svg {
-		color: var(--black);
-		transition: 0.3s;
-	}
-	.hamburger:hover svg {
-		color: var(--accent);
-	}
-	.mobile-menu {
-		display: none;
-		position: absolute;
-		top: 100%;
-		left: 0;
-		right: 0;
-		background: white;
-		box-shadow: 0 2px 8px rgba(var(--black), 10%);
-		flex-direction: column;
-		padding: 1rem;
-	}
-	.mobile-menu.active {
-		display: flex;
-	}
+
 	@media (max-width: 768px) {
-		.social-links {
-			display: none;
+		nav {
+			padding: 16px 24px;
 		}
-		.logo-link {
-            justify-self: unset; /* Reseta o alinhamento do grid */
-            order: 0; /* Ordem padrão */
-            flex-grow: 1; /* Permite que ele cresça e centralize */
-            justify-content: center; /* Centraliza o conteúdo (o logo) dentro dele */
-        }
-        .site-logo {
-            height: 35px; /* Altura um pouco menor no mobile, se desejar */
-        }
+
+		.hamburger {
+			display: flex;
+		}
 
 		.internal-links {
 			display: none;
+			position: absolute;
+			top: 100%;
+			left: 0;
+			right: 0;
+			background: var(--nav-bg);
+			backdrop-filter: blur(10px);
+			border-bottom: 1px solid var(--border);
+			flex-direction: column;
+			gap: 0;
+			padding: 0.5rem 0;
 		}
-		.mobile-controls {
+
+		.internal-links.open {
 			display: flex;
 		}
+
+		.internal-links a {
+			padding: 0.9rem 1.5rem;
+		}
+
 		nav {
 			position: relative;
-			justify-content: space-between;
-		}
-	}
-	.lang-toggle {
-		justify-self: end;
-		font-weight: bold;
-		/* padding: 0.5em 1em; */
-		border-radius: 4px;
-		transition: background-color 0.2s;
-	}
-	.lang-toggle:hover {
-		background-color: rgba(var(--accent), 0.1);
-	}
-	@media (min-width: 769px) {
-		nav {
-            display: flex;
-            justify-content: space-between;
-            position: relative;
-        }
-		h2 {
-            justify-self: unset; /* Reseta o alinhamento do grid */
-        }
-		/* .internal-links {
-            display: none;
-        }
-        .mobile-controls {
-            display: flex;
-        } */
-		.mobile-controls {
-			display: none;
-		}
-		.mobile-menu {
-			display: none !important;
 		}
 	}
 </style>

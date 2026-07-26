@@ -1,7 +1,6 @@
 ---
-import Layout from '../../layouts/BlogPost.astro';
-import { t } from '../../i18n.ts';
-import AboutHeroImage from '../../assets/blog-placeholder-about.jpg';
+// The "About" content now lives as a section on the home page (#about).
+// This route is kept so old links/bookmarks still resolve.
 export function getStaticPaths() {
   return [
     { params: { lang: "en" }},
@@ -10,17 +9,17 @@ export function getStaticPaths() {
 }
 
 const { lang } = Astro.params;
-
+const redirectUrl = `/${lang}/#about`;
 ---
 
-<Layout
-	title={t(lang, "about-page")}
-	description="Lorem ipsum dolor sit amet"
-	pubDate={new Date('August 08 2025')}
-	heroImage={AboutHeroImage}
-	lang={lang}
->
-	<p>
-		Under construction. It will be avaiable soon.
-	</p>
-</Layout>
+<!DOCTYPE html>
+<html lang={lang}>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content={`0;url=${redirectUrl}`}>
+  <title>Redirecting...</title>
+</head>
+<body>
+  <p>Redirecting to <a href={redirectUrl}>the site</a>...</p>
+</body>
+</html>

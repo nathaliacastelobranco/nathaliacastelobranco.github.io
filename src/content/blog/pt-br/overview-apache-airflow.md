@@ -4,6 +4,7 @@ description: 'Lorem ipsum dolor sit amet'
 pubDate: 'August 23 2025'
 heroImage: '../../../assets/01-data-modeling.jpg'
 lang: 'pt-br'
+tags: ['Data Engineering', 'Airflow']
 ---
 
 

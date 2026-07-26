@@ -4,6 +4,7 @@ description: 'Lorem ipsum dolor sit amet'
 pubDate: 'Jun 16 2025'
 heroImage: '../../../assets/01-data-modeling.jpg'
 lang: 'pt-br'
+tags: ['Machine Learning', 'Métricas']
 ---
 
 <!-- Permitir leitura de LateX -->

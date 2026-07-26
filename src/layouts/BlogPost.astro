@@ -5,86 +5,159 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import { Image } from 'astro:assets';
+import { t } from '../i18n.ts';
 
-type Props = CollectionEntry<'blog'>['data'];
+type Props = CollectionEntry<'blog'>['data'] & { readingTimeMinutes: number };
 
-const { title, description, pubDate, updatedDate, heroImage, lang } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, lang, tags, readingTimeMinutes } = Astro.props;
+
+const readingTimeLabel = lang === 'pt-br' ? `${readingTimeMinutes} min de leitura` : `${readingTimeMinutes} min read`;
 ---
 
 <html lang={ lang }>
 	<head>
-		<BaseHead title={title} description={description} />
-		<style>
-			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
-			}
-			.hero-image {
-				width: 100%;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
-			}
-			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
-				color: rgb(var(--gray-dark));
-			}
-			.title {
-				margin-bottom: 1em;
-				padding: 1em 0;
-				text-align: center;
-				line-height: 1;
-			}
-			.title h1 {
-				margin: 0 0 0.5em 0;
-			}
-			.date {
-				margin-bottom: 0.5em;
-				color: rgb(var(--gray));
-			}
-			.last-updated-on {
-				font-style: italic;
-				font-size: small;
-			}
-		</style>
+		<BaseHead title={title} description={description} image={heroImage} />
 	</head>
 
 	<body>
+		<div class="scanline-overlay"></div>
 		<Header lang={lang}/>
-		<main>
+		<main class="post-main">
 			<article>
-				<div class="hero-image">
-					{heroImage && <Image width={2000} height={400}  src={heroImage} alt="" />}
-				</div>
-				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<h1>{title}</h1>
-							<span>Nathalia Castelo Branco</span>
+				<a href={`/${lang}/blog`} class="back-link mono">{lang === 'pt-br' ? '← voltar ao blog' : '← back to blog'}</a>
 
-							<hr />
-							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
-						</div>
-						<hr />
+				{tags && tags.length > 0 && (
+					<div class="post-tags">
+						{tags.map((tag) => <span class="tag tag--cyan">{tag}</span>)}
 					</div>
+				)}
+
+				<h1>{title}</h1>
+
+				<div class="post-meta mono">
+					<span>Nathalia Castelo Branco</span>
+					<span class="dot"></span>
+					<FormattedDate date={pubDate} />
+					<span class="dot"></span>
+					<span>{readingTimeLabel}</span>
+				</div>
+
+				{heroImage && (
+					<div class="hero-image">
+						<Image width={1600} height={640} src={heroImage} alt="" />
+					</div>
+				)}
+
+				<div class="prose">
 					<slot />
+				</div>
+
+				{
+					updatedDate && (
+						<div class="last-updated-on mono">
+							{lang === 'pt-br' ? 'Atualizado em ' : 'Last updated on '}<FormattedDate date={updatedDate} />
+						</div>
+					)
+				}
+
+				<div class="share mono">
+					<span>{lang === 'pt-br' ? 'Compartilhar:' : 'Share:'}</span>
+					<a href="https://linkedin.com/in/nathaliacastelobranco" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+					<a href="https://github.com/nathaliacastelobranco" target="_blank" rel="noopener noreferrer">GitHub</a>
 				</div>
 			</article>
 		</main>
 		<Footer lang={lang}/>
 	</body>
 </html>
+
+<style>
+	.post-main {
+		width: 760px;
+		max-width: calc(100% - 2em);
+		margin: 0 auto;
+		padding: 56px 1em 100px;
+	}
+
+	.back-link {
+		font-size: 13px;
+		color: var(--text-dim);
+	}
+
+	.post-tags {
+		display: flex;
+		gap: 8px;
+		margin: 32px 0 20px;
+	}
+
+	article h1 {
+		font-size: 2.2em;
+		line-height: 1.15;
+		margin: 0 0 20px;
+	}
+
+	.post-meta {
+		display: flex;
+		align-items: center;
+		gap: 14px;
+		font-size: 13px;
+		color: var(--text-dim);
+		margin-bottom: 36px;
+	}
+
+	.dot {
+		width: 4px;
+		height: 4px;
+		border-radius: 50%;
+		background: var(--text-faint);
+		display: inline-block;
+	}
+
+	.hero-image {
+		width: 100%;
+		margin-bottom: 40px;
+	}
+
+	.hero-image img {
+		display: block;
+		width: 100%;
+		border-radius: 4px;
+	}
+
+	.prose {
+		font-size: 1.05rem;
+		line-height: 1.85;
+		color: var(--text-muted);
+	}
+
+	.prose :global(h2) {
+		font-size: 1.5em;
+		color: var(--text);
+		margin: 44px 0 18px;
+	}
+
+	.prose :global(pre) {
+		font-size: 13px;
+		color: var(--accent-pink);
+	}
+
+	.last-updated-on {
+		font-size: 12px;
+		color: var(--text-faint);
+	}
+
+	.share {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+		margin-top: 48px;
+		padding-top: 28px;
+		border-top: 1px solid var(--border);
+		font-size: 13px;
+		color: var(--text-dim);
+	}
+
+	.share a {
+		color: var(--text);
+	}
+</style>

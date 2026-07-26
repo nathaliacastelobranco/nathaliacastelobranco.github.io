@@ -1,0 +1,50 @@
+---
+// Floating dark/light mode toggle. Theme state lives in localStorage
+// (THEME_STORAGE_KEY) and is applied as a `data-theme` attribute on <html>;
+// see the blocking init script in BaseHead.astro that avoids a flash.
+import { THEME_STORAGE_KEY, DEFAULT_THEME } from '../consts';
+---
+
+<button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark/light mode" title="Toggle dark/light mode">
+	<span class="theme-toggle-icon" aria-hidden="true">☀</span>
+</button>
+
+<script define:vars={{ THEME_STORAGE_KEY, DEFAULT_THEME }}>
+	const button = document.getElementById('theme-toggle');
+	const icon = button?.querySelector('.theme-toggle-icon');
+
+	const syncIcon = () => {
+		const theme = document.documentElement.getAttribute('data-theme') || DEFAULT_THEME;
+		if (icon) icon.textContent = theme === 'dark' ? '☾' : '☀';
+	};
+
+	syncIcon();
+
+	button?.addEventListener('click', () => {
+		const current = document.documentElement.getAttribute('data-theme') || DEFAULT_THEME;
+		const next = current === 'dark' ? 'light' : 'dark';
+		document.documentElement.setAttribute('data-theme', next);
+		try {
+			localStorage.setItem(THEME_STORAGE_KEY, next);
+		} catch (e) {}
+		syncIcon();
+	});
+</script>
+
+<style>
+	.theme-toggle {
+		width: 44px;
+		height: 44px;
+		border-radius: 50%;
+		border: 1px solid var(--border-strong);
+		background: var(--bg-panel-solid);
+		backdrop-filter: blur(10px);
+		color: var(--accent-pink);
+		font-size: 17px;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		box-shadow: var(--box-shadow);
+	}
+</style>

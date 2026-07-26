@@ -1,19 +1,114 @@
 ---
 import { t } from '../i18n.ts';
-const today = new Date();
+
 const { lang } = Astro.props;
+const today = new Date();
+
+const socials = [
+	{ label: 'github.com/nathaliacastelobranco', href: 'https://github.com/nathaliacastelobranco' },
+	{ label: 'linkedin.com/in/nathaliacastelobranco', href: 'https://linkedin.com/in/nathaliacastelobranco' },
+	{ label: 'nathaliaacbranco@gmail.com', href: 'mailto:nathaliaacbranco@gmail.com' },
+];
 ---
 
-<footer>
-	&copy; {today.getFullYear()} Nathalia Castelo Branco. {t(lang, "footer")}
+<footer id="contact" class="section">
+	<div class="contact-top">
+		<div class="contact-copy">
+			<div class="eyebrow eyebrow--pink">{t(lang, 'contactEyebrow')}</div>
+			<h2>{t(lang, 'contactTitle')}</h2>
+			<p class="contact-desc">{t(lang, 'contactDesc')}</p>
+		</div>
+		<div class="contact-links mono">
+			{socials.map((social) => (
+				<a href={social.href} target={social.href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer">
+					{social.label}
+				</a>
+			))}
+		</div>
+	</div>
+	<div class="contact-bottom mono">
+		<span>&copy; {today.getFullYear()} Nathalia Castelo Branco</span>
+		<span class="contact-tag">
+			<span class="dot"></span>
+			{t(lang, 'footerTag')}
+		</span>
+	</div>
 </footer>
 
 <style>
 	footer {
-		background: linear-gradient(var(--gray-gradient)) no-repeat;
-		color: var(--accent);
-		text-align: center;
-		font-size: 0.7em;
+		padding-bottom: 40px;
 	}
 
+	.contact-top {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-end;
+		flex-wrap: wrap;
+		gap: 40px;
+		margin-bottom: 56px;
+	}
+
+	.contact-copy {
+		max-width: 480px;
+	}
+
+	.contact-copy h2 {
+		font-size: 2.2em;
+		margin: 0 0 20px;
+	}
+
+	.contact-desc {
+		font-size: 1rem;
+		line-height: 1.7;
+		color: var(--text-dim);
+		margin: 0;
+	}
+
+	.contact-links {
+		display: flex;
+		flex-direction: column;
+		gap: 14px;
+		font-size: 15px;
+	}
+
+	.contact-links a {
+		color: var(--text);
+	}
+
+	.contact-links a:hover {
+		color: var(--accent-pink);
+	}
+
+	.contact-bottom {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 12px;
+		padding-top: 24px;
+		border-top: 1px solid var(--border);
+		font-size: 12px;
+		color: var(--text-faint);
+	}
+
+	.contact-tag {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+	}
+
+	.dot {
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		background: var(--accent-pink);
+		display: inline-block;
+	}
+
+	@media (max-width: 720px) {
+		.contact-copy h2 {
+			font-size: 1.7em;
+		}
+	}
 </style>

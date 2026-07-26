@@ -5,6 +5,7 @@ pubDate: 'Jun 25 2025'
 updatedDate: 'Sep 11 2025'
 heroImage: '../../../assets/04-ilustra-dog.jpg'
 lang: 'en'
+tags: ['NLP', 'LLM']
 ---
 
 

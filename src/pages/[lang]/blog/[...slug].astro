@@ -24,8 +24,11 @@ type Props = {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+
+const wordCount = (post.body ?? '').trim().split(/\s+/).filter(Boolean).length;
+const readingTimeMinutes = Math.max(1, Math.round(wordCount / 200));
 ---
 
-<BlogPost {...post.data}>
+<BlogPost {...post.data} readingTimeMinutes={readingTimeMinutes}>
 	<Content />
 </BlogPost>

@@ -5,7 +5,6 @@ import Footer from '../../../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../../../consts';
 import { getCollection } from 'astro:content';
 import FormattedDate from '../../../components/FormattedDate.astro';
-import { Image } from 'astro:assets';
 import { t } from '../../../i18n';
 
 export function getStaticPaths() {
@@ -17,116 +16,105 @@ export function getStaticPaths() {
 
 const { lang } = Astro.params;
 
-const posts = await getCollection('blog', (entry) => entry.id.startsWith(lang + '/'));
+const posts = (await getCollection('blog', (entry) => entry.id.startsWith(lang + '/')))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 ---
 
 <!doctype html>
 <html lang={ lang }>
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<style>
-			main {
-				width: 960px;
-				padding: 1em 1em;
-			}
-			ul {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 2rem;
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
-			}
-			ul li {
-				width: calc(50% - 1rem);
-			}
-			ul li * {
-				text-decoration: none;
-				transition: 0.2s ease;
-			}
-			ul li:first-child {
-				width: 100%;
-				margin-bottom: 1rem;
-				text-align: center;
-			}
-			ul li:first-child img {
-				width: 100%;
-			}
-			ul li:first-child .title {
-				font-size: 2.369rem;
-			}
-			ul li img {
-				margin-bottom: 0.5rem;
-				border-radius: 12px;
-			}
-			ul li a {
-				display: block;
-			}
-			.title {
-				margin: 0;
-				color: rgb(var(--black));
-				line-height: 1;
-			}
-			.date {
-				margin: 0;
-				color: rgb(var(--gray));
-			}
-			ul li a:hover h4,
-			ul li a:hover .date {
-				color: rgb(var(--accent));
-			}
-			ul a:hover img {
-				box-shadow: var(--box-shadow);
-			}
-			.blog-description {
-				font-size: 0.7em;
-				width: 100%;
-				text-align: center;
-				color: var(--light-purple-hex);
-
-			}
-			@media (max-width: 720px) {
-				ul {
-					gap: 0.5em;
-				}
-				ul li {
-					width: 100%;
-					text-align: center;
-				}
-				ul li:first-child {
-					margin-bottom: 0;
-				}
-				ul li:first-child .title {
-					font-size: 1.563em;
-				}
-			}
-		</style>
+		<BaseHead title={`${t(lang, 'blog')} · ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
 	</head>
 	<body>
+		<div class="scanline-overlay"></div>
 		<Header lang={ lang } />
-		<main>
-			<section>
-				<ul>
-					{
-						posts.map((post) => (
-							<li>
-								<a href={`/${lang}/blog/${post.id.replace(lang + '/', '')}/`}>
-									{post.data.heroImage && (
-										<Image width={2000} height={360} src={post.data.heroImage} alt="" />
-									)}
-									<h4 class="title">{post.data.title}</h4>
-									<p class="date">
-										<FormattedDate date={post.data.pubDate} />
-									</p>
-								</a>
-							</li>
-						))
-					}
-				</ul>
-			</section>
-			<p class="blog-description">{t(lang, "blog_description")}</p>
+		<main class="section blog-main">
+			<h1>{t(lang, 'blog')}</h1>
+			<div class="posts-list">
+				{posts.map((post) => (
+					<a href={`/${lang}/blog/${post.id.replace(lang + '/', '')}/`} class="post-row">
+						<div class="post-row-copy">
+							<h2>{post.data.title}</h2>
+							<p>{post.data.description}</p>
+						</div>
+						<div class="post-row-date mono"><FormattedDate date={post.data.pubDate} /></div>
+					</a>
+				))}
+				<div class="posts-list-end"></div>
+			</div>
+			<p class="blog-description mono">{t(lang, "blog_description")}</p>
 		</main>
 		<Footer lang={ lang } />
 	</body>
 </html>
+
+<style>
+	.blog-main {
+		padding-top: 56px;
+		border-top: none;
+	}
+
+	.blog-main h1 {
+		font-size: 2.4em;
+		margin: 0 0 40px;
+	}
+
+	.posts-list {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.post-row {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 24px;
+		padding: 26px 0;
+		border-top: 1px solid var(--border);
+		color: var(--text);
+	}
+
+	.post-row:hover h2 {
+		color: var(--accent-pink);
+	}
+
+	.post-row-copy h2 {
+		font-size: 1.2em;
+		margin: 0 0 8px;
+		transition: color 0.2s;
+	}
+
+	.post-row-copy p {
+		font-size: 14px;
+		color: var(--text-dim);
+		margin: 0;
+		max-width: 560px;
+		line-height: 1.5;
+	}
+
+	.post-row-date {
+		font-size: 12px;
+		color: var(--text-dim);
+		white-space: nowrap;
+	}
+
+	.posts-list-end {
+		border-top: 1px solid var(--border);
+	}
+
+	.blog-description {
+		margin-top: 40px;
+		font-size: 12px;
+		text-align: center;
+		color: var(--text-faint);
+	}
+
+	@media (max-width: 600px) {
+		.post-row {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 8px;
+		}
+	}
+</style>

@@ -1,61 +1,90 @@
 /*
-  The CSS in this style tag is based off of Bear Blog's default CSS.
-  https://github.com/HermanMartinus/bearblog/blob/297026a877bc2ab2b3bdfbd6b9f7961c350917dd/templates/styles/blog/default.css
-  License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
- */
+  Design tokens ported from the Claude Design redesign comp
+  (see /Users/Nathalia/Developer/personal/redesign-portfolio).
+  Light theme is the default; dark is opt-in via [data-theme="dark"].
+*/
 
 :root {
-	--accent: 0, 78, 146;
-	--accent-hex: #0D3B66;
-	--light-accent-hex: #145385;
-	--accent-dark: #000428;
-	--orange-hex: #F4A261;
-	--light-orange-hex: #F7B789 ;
-	--purple-hex: #6A4E93;
-	--light-purple-hex: #9277B8;
-	--black: 15, 18, 25;
-	--gray: 96, 115, 159;
-	--gray-light: 229, 233, 240;
-	--gray-dark: 34, 41, 57;
-	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
-	--tag-gradient: rgba(var(--accent), 0.5);
-	--box-shadow:
-		0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
-		0 16px 32px rgba(var(--gray), 33%);
+	--font-sans: 'Space Grotesk', sans-serif;
+	--font-mono: 'JetBrains Mono', monospace;
+
+	/* light theme (default) */
+	--bg: oklch(0.97 0.008 340);
+	--bg-panel: oklch(0.93 0.015 340 / 0.6);
+	--bg-panel-solid: oklch(0.98 0.01 340 / 0.85);
+	--text: oklch(0.18 0.01 285);
+	--text-muted: oklch(0.35 0.015 285);
+	--text-dim: oklch(0.45 0.012 285);
+	--text-faint: oklch(0.55 0.01 285);
+	--border: oklch(0.15 0 0 / 0.1);
+	--border-strong: oklch(0.15 0 0 / 0.18);
+	--accent-pink: oklch(0.6 0.17 350);
+	--accent-pink-dim: oklch(0.6 0.17 350 / 0.5);
+	--accent-pink-faint: oklch(0.6 0.17 350 / 0.2);
+	--accent-pink-faint-2: oklch(0.6 0.17 350 / 0.35);
+	--accent-cyan: oklch(0.5 0.13 200);
+	--accent-cyan-faint: oklch(0.5 0.13 200 / 0.3);
+	--nav-bg: oklch(0.97 0.008 340 / 0.85);
+	--scanline: oklch(0.15 0 0 / 0.02);
+	--box-shadow: 0 4px 16px oklch(0 0 0 / 0.12);
 }
-@font-face {
-	font-family: 'Atkinson';
-	src: url('/fonts/atkinson-regular.woff') format('woff');
-	font-weight: 400;
-	font-style: normal;
-	font-display: swap;
+
+:root[data-theme='dark'] {
+	--bg: oklch(0.15 0.006 285);
+	--bg-panel: oklch(0.19 0.008 285 / 0.5);
+	--bg-panel-solid: oklch(0.19 0.008 285 / 0.85);
+	--text: oklch(0.95 0.006 285);
+	--text-muted: oklch(0.75 0.01 285);
+	--text-dim: oklch(0.68 0.01 285);
+	--text-faint: oklch(0.5 0.01 285);
+	--border: oklch(1 0 0 / 0.08);
+	--border-strong: oklch(1 0 0 / 0.2);
+	--accent-pink: oklch(0.82 0.09 350);
+	--accent-pink-dim: oklch(0.82 0.09 350 / 0.5);
+	--accent-pink-faint: oklch(0.82 0.09 350 / 0.18);
+	--accent-pink-faint-2: oklch(0.82 0.09 350 / 0.3);
+	--accent-cyan: oklch(0.82 0.09 200);
+	--accent-cyan-faint: oklch(0.82 0.09 200 / 0.3);
+	--nav-bg: oklch(0.15 0.006 285 / 0.85);
+	--scanline: oklch(1 0 0 / 0.015);
+	--box-shadow: 0 4px 16px oklch(0 0 0 / 0.2);
 }
-@font-face {
-	font-family: 'Atkinson';
-	src: url('/fonts/atkinson-bold.woff') format('woff');
-	font-weight: 700;
-	font-style: normal;
-	font-display: swap;
+
+* {
+	box-sizing: border-box;
 }
+
+html {
+	background: var(--bg);
+	color-scheme: light dark;
+}
+
 body {
-	font-family: 'Atkinson', sans-serif;
+	font-family: var(--font-sans);
 	margin: 0;
 	padding: 0;
 	text-align: left;
-	background: linear-gradient(var(--gray-gradient)) no-repeat;
-	background-size: 100% 600px;
+	background: var(--bg);
 	word-wrap: break-word;
 	overflow-wrap: break-word;
-	color: rgb(var(--gray-dark));
-	font-size: 20px;
+	color: var(--text);
+	font-size: 17px;
 	line-height: 1.7;
+	transition: background 0.3s, color 0.3s;
 }
+
+::selection {
+	background: var(--accent-pink-faint);
+	color: var(--text);
+}
+
 main {
 	width: 720px;
 	max-width: calc(100% - 2em);
 	margin: auto;
 	padding: 3em 1em;
 }
+
 h1,
 h2,
 h3,
@@ -63,84 +92,199 @@ h4,
 h5,
 h6 {
 	margin: 0 0 0.5rem 0;
-	color: rgb(var(--black));
+	color: var(--text);
 	line-height: 1.2;
+	font-weight: 600;
+	letter-spacing: -0.01em;
 }
+
 h1 {
-	font-size: 3.052em;
+	font-size: 2.8em;
+	font-weight: 700;
 }
+
 h2 {
-	font-size: 2.441em;
+	font-size: 2.1em;
 }
+
 h3 {
-	font-size: 1.953em;
+	font-size: 1.5em;
 }
+
 h4 {
-	font-size: 1.563em;
-}
-h5 {
 	font-size: 1.25em;
 }
+
+h5 {
+	font-size: 1.1em;
+}
+
 strong,
 b {
 	font-weight: 700;
 }
+
 a {
-	color: var(--accent-hex);
+	color: var(--accent-pink);
+	text-decoration: none;
 }
+
 a:hover {
-	color: var(--accent-hex);
+	color: var(--text);
 }
+
 p {
 	margin-bottom: 1em;
 }
+
 .prose p {
-	margin-bottom: 2em;
+	margin-bottom: 1.5em;
 }
+
 textarea {
 	width: 100%;
 	font-size: 16px;
 }
+
 input {
 	font-size: 16px;
 }
+
 table {
 	width: 100%;
 }
+
 img {
 	max-width: 100%;
 	height: auto;
-	border-radius: 8px;
+	border-radius: 4px;
 }
+
 code {
-	padding: 2px 5px;
-	background-color: rgb(var(--gray-light));
+	font-family: var(--font-mono);
+	padding: 2px 6px;
+	background-color: var(--bg-panel);
 	border-radius: 2px;
+	font-size: 0.9em;
 }
+
 pre {
+	font-family: var(--font-mono);
 	padding: 1.5em;
-	border-radius: 8px;
+	border-radius: 4px;
+	background: var(--bg-panel-solid);
+	border: 1px solid var(--border);
+	overflow-x: auto;
 }
+
 pre > code {
 	all: unset;
+	font-family: var(--font-mono);
 }
+
 blockquote {
-	border-left: 4px solid var(--accent-hex);
+	border-left: 4px solid var(--accent-pink);
 	padding: 0 0 0 20px;
 	margin: 0px;
-	font-size: 1.333em;
+	font-size: 1.2em;
+	color: var(--text-muted);
 }
+
 hr {
 	border: none;
-	border-top: 1px solid rgb(var(--gray-light));
+	border-top: 1px solid var(--border);
 }
-@media (max-width: 720px) {
-	body {
-		font-size: 18px;
-	}
-	main {
-		padding: 1em;
-	}
+
+/* shared design-system utility classes, used across components */
+
+.eyebrow {
+	font-family: var(--font-mono);
+	font-size: 13px;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	margin-bottom: 16px;
+}
+
+.eyebrow--pink {
+	color: var(--accent-pink);
+}
+
+.eyebrow--cyan {
+	color: var(--accent-cyan);
+}
+
+.mono {
+	font-family: var(--font-mono);
+}
+
+.tag {
+	font-family: var(--font-mono);
+	font-size: 12px;
+	padding: 6px 13px;
+	border: 1px solid var(--border-strong);
+	border-radius: 20px;
+	color: var(--text-muted);
+	display: inline-block;
+}
+
+.tag--cyan {
+	font-size: 11px;
+	color: var(--accent-cyan);
+	border-color: var(--accent-cyan-faint);
+	padding: 3px 9px;
+}
+
+.btn {
+	font-family: var(--font-mono);
+	font-size: 13px;
+	padding: 14px 28px;
+	border-radius: 2px;
+	font-weight: 600;
+	letter-spacing: 0.03em;
+	display: inline-block;
+	border: 1px solid transparent;
+	transition: opacity 0.2s;
+}
+
+.btn:hover {
+	opacity: 0.85;
+}
+
+.btn--primary {
+	background: var(--accent-pink);
+	color: var(--bg);
+}
+
+.btn--primary:hover {
+	color: var(--bg);
+}
+
+.btn--secondary {
+	border-color: var(--border-strong);
+	color: var(--text);
+}
+
+.btn--secondary:hover {
+	color: var(--text);
+}
+
+.section {
+	position: relative;
+	z-index: 1;
+	scroll-margin-top: 84px;
+	padding: 80px 24px;
+	max-width: 1100px;
+	margin: 0 auto;
+	border-top: 1px solid var(--border);
+}
+
+.scanline-overlay {
+	position: fixed;
+	inset: 0;
+	pointer-events: none;
+	z-index: 0;
+	background-image: repeating-linear-gradient(0deg, var(--scanline) 0px, var(--scanline) 1px, transparent 1px, transparent 3px);
+	opacity: 0.5;
 }
 
 .sr-only {
@@ -159,4 +303,17 @@ hr {
 	clip-path: inset(50%);
 	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
 	white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+	body {
+		font-size: 16px;
+	}
+	main {
+		padding: 1em;
+	}
+	.section {
+		scroll-margin-top: 64px;
+		padding: 56px 20px;
+	}
 }

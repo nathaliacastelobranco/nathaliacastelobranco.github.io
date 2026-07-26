@@ -1,0 +1,88 @@
+---
+import { getCollection } from 'astro:content';
+
+interface Props {
+	lang: string;
+}
+
+const { lang } = Astro.props;
+const current = lang;
+const other = lang === 'pt-br' ? 'en' : 'pt-br';
+
+const isBlogPost = Astro.url.pathname.includes('/blog/') && Astro.url.pathname.split('/').length > 3;
+let otherPath = Astro.url.pathname.replace(`/${current}`, `/${other}`);
+
+if (isBlogPost) {
+	// Every route on this site ends with a trailing slash, so a plain
+	// `.split('/').pop()` always returns "" (the segment after the last
+	// slash) instead of the slug — filter out empty segments first.
+	const currentSlug = Astro.url.pathname.split('/').filter(Boolean).pop();
+
+	try {
+		const otherPosts = await getCollection('blog', (entry) => entry.id.startsWith(other + '/'));
+		const correspondingPost = otherPosts.find((post) => post.id.split('/').pop() === currentSlug);
+
+		if (!correspondingPost) {
+			otherPath = `/${other}/blog`;
+		}
+	} catch (error) {
+		otherPath = `/${other}/blog`;
+	}
+}
+
+// Position is fixed (PT on top, EN on bottom) regardless of which one is
+// active — only the highlight moves. Swapping the labels' order based on
+// "current vs. other" was the old bug: the pink pill stayed put and the
+// text jumped into it instead of the pill sliding to the active label.
+const ptPath = current === 'pt-br' ? Astro.url.pathname : otherPath;
+const enPath = current === 'en' ? Astro.url.pathname : otherPath;
+const isPt = current === 'pt-br';
+---
+
+<div class={`lang-switcher ${isPt ? 'is-pt' : 'is-en'}`}>
+	<span class="lang-switcher-highlight" aria-hidden="true"></span>
+	<a href={ptPath} class="lang-switcher-option" aria-current={isPt ? 'true' : undefined}>PT</a>
+	<a href={enPath} class="lang-switcher-option" aria-current={!isPt ? 'true' : undefined}>EN</a>
+</div>
+
+<style>
+	.lang-switcher {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		border-radius: 24px;
+		border: 1px solid var(--border-strong);
+		background: var(--bg-panel-solid);
+		backdrop-filter: blur(10px);
+		overflow: hidden;
+		box-shadow: var(--box-shadow);
+	}
+
+	.lang-switcher-highlight {
+		position: absolute;
+		inset: 0 0 50% 0;
+		background: var(--accent-pink);
+		transition: transform 0.2s ease;
+	}
+
+	.lang-switcher.is-en .lang-switcher-highlight {
+		transform: translateY(100%);
+	}
+
+	.lang-switcher-option {
+		position: relative;
+		z-index: 1;
+		font-family: var(--font-mono);
+		font-size: 11px;
+		font-weight: 600;
+		padding: 9px 11px;
+		text-align: center;
+		color: var(--text-dim);
+		transition: color 0.2s ease;
+	}
+
+	.lang-switcher.is-pt .lang-switcher-option[aria-current='true'],
+	.lang-switcher.is-en .lang-switcher-option[aria-current='true'] {
+		color: var(--bg);
+	}
+</style>
