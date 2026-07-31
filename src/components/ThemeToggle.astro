@@ -5,7 +5,7 @@
 import { THEME_STORAGE_KEY, DEFAULT_THEME } from '../consts';
 ---
 
-<button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark/light mode" title="Toggle dark/light mode">
+<button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch theme" title="Switch theme">
 	<span class="theme-toggle-icon" aria-hidden="true">☀</span>
 </button>
 
@@ -16,6 +16,11 @@ import { THEME_STORAGE_KEY, DEFAULT_THEME } from '../consts';
 	const syncIcon = () => {
 		const theme = document.documentElement.getAttribute('data-theme') || DEFAULT_THEME;
 		if (icon) icon.textContent = theme === 'dark' ? '☾' : '☀';
+		if (button) {
+			const targetTheme = theme === 'dark' ? 'light' : 'dark';
+			button.setAttribute('aria-label', `Switch to ${targetTheme} mode`);
+			button.setAttribute('title', `Switch to ${targetTheme} mode`);
+		}
 	};
 
 	syncIcon();
@@ -46,5 +51,16 @@ import { THEME_STORAGE_KEY, DEFAULT_THEME } from '../consts';
 		align-items: center;
 		justify-content: center;
 		box-shadow: var(--box-shadow);
+		transition: border-color 0.2s ease, transform 0.2s ease;
+	}
+
+	.theme-toggle:focus-visible {
+		outline: 2px solid var(--accent-pink);
+		outline-offset: 2px;
+	}
+
+	.theme-toggle:hover {
+		transform: scale(1.05);
 	}
 </style>
+

@@ -3,6 +3,7 @@ import { SITE_TITLE } from '../consts';
 import { t } from '../i18n.ts';
 import ThemeToggle from './ThemeToggle.astro';
 import LanguageSwitcher from './LanguageSwitcher.astro';
+import BackToTop from './BackToTop.astro';
 
 const { lang } = Astro.props;
 const pathname = Astro.url.pathname;
@@ -23,6 +24,7 @@ const navLinks = [
 <div class="floating-controls">
 	<ThemeToggle />
 	<LanguageSwitcher lang={lang} />
+	<BackToTop />
 </div>
 
 <header>
@@ -33,14 +35,14 @@ const navLinks = [
 			</span>
 			NCB
 		</a>
-		<button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+		<button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="internal-links">
 			<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
 				<path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
 			</svg>
 		</button>
 		<div class="internal-links" id="internal-links">
 			{navLinks.map((link) => (
-				<a href={link.href} class={link.active ? 'active' : ''}>{link.label}</a>
+				<a href={link.href} class={link.active ? 'active' : ''} aria-current={link.active ? 'page' : undefined}>{link.label}</a>
 			))}
 		</div>
 	</nav>

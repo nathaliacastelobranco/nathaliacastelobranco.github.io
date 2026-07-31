@@ -24,7 +24,7 @@ const posts = (await getCollection('blog', (entry) => entry.id.startsWith(lang +
 <!doctype html>
 <html lang={ lang }>
 	<head>
-		<BaseHead title={`${t(lang, 'blog')} · ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
+		<BaseHead title={`${t(lang, 'blog')} · ${SITE_TITLE}`} description={SITE_DESCRIPTION} lang={lang} />
 	</head>
 	<body>
 		<div class="scanline-overlay"></div>

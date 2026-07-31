@@ -10,11 +10,32 @@ interface Props {
 	title: string;
 	description: string;
 	image?: ImageMetadata;
+	lang?: string;
 }
+
+const { title, description, image = FallbackImage, lang = 'en' } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const { title, description, image = FallbackImage } = Astro.props;
+const currentPath = Astro.url.pathname;
+let enPath = currentPath;
+let ptPath = currentPath;
+
+if (currentPath.startsWith('/pt-br')) {
+	enPath = currentPath.replace('/pt-br', '/en');
+} else if (currentPath.startsWith('/en')) {
+	ptPath = currentPath.replace('/en', '/pt-br');
+} else {
+	enPath = `/en${currentPath}`;
+	ptPath = `/pt-br${currentPath}`;
+}
+
+const enURL = new URL(enPath, Astro.site);
+const ptURL = new URL(ptPath, Astro.site);
+const defaultURL = new URL('/en/', Astro.site);
+
+const ogImageURL = new URL(image.src, Astro.site);
+const ogLocale = lang === 'pt-br' ? 'pt_BR' : 'en_US';
 ---
 
 <!-- Global Metadata -->
@@ -29,6 +50,11 @@ const { title, description, image = FallbackImage } = Astro.props;
 	href={new URL('rss.xml', Astro.site)}
 />
 <meta name="generator" content={Astro.generator} />
+
+<!-- i18n Alternate Links -->
+<link rel="alternate" hreflang="en" href={enURL} />
+<link rel="alternate" hreflang="pt-br" href={ptURL} />
+<link rel="alternate" hreflang="x-default" href={defaultURL} />
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -58,14 +84,16 @@ const { title, description, image = FallbackImage } = Astro.props;
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
-<meta property="og:url" content={Astro.url} />
+<meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={new URL(image.src, Astro.url)} />
+<meta property="og:image" content={ogImageURL} />
+<meta property="og:locale" content={ogLocale} />
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:url" content={canonicalURL} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={new URL(image.src, Astro.url)} />
+<meta property="twitter:image" content={ogImageURL} />
+

@@ -39,11 +39,11 @@ const enPath = current === 'en' ? Astro.url.pathname : otherPath;
 const isPt = current === 'pt-br';
 ---
 
-<div class={`lang-switcher ${isPt ? 'is-pt' : 'is-en'}`}>
+<nav class={`lang-switcher ${isPt ? 'is-pt' : 'is-en'}`} aria-label="Language switcher">
 	<span class="lang-switcher-highlight" aria-hidden="true"></span>
-	<a href={ptPath} class="lang-switcher-option" aria-current={isPt ? 'true' : undefined}>PT</a>
-	<a href={enPath} class="lang-switcher-option" aria-current={!isPt ? 'true' : undefined}>EN</a>
-</div>
+	<a href={ptPath} class="lang-switcher-option" hreflang="pt-br" aria-label="Mudar para Português" aria-current={isPt ? 'page' : undefined}>PT</a>
+	<a href={enPath} class="lang-switcher-option" hreflang="en" aria-label="Switch to English" aria-current={!isPt ? 'page' : undefined}>EN</a>
+</nav>
 
 <style>
 	.lang-switcher {

@@ -20,7 +20,7 @@ const { lang } = Astro.params as { lang: 'en' | 'pt-br' };
 <!doctype html>
 <html lang={ lang }>
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} lang={lang} />
 	</head>
 	<body>
 		<div class="scanline-overlay"></div>

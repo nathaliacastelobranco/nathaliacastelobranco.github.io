@@ -27,7 +27,7 @@ export const translations = {
     footer: "All rights reserved.",
     'about-page': "About me",
     projects: "Projects",
-    blog_description: "Some articles were write only in Portuguese, switch language to acess.",
+    blog_description: "Some articles are written in Portuguese; switch language to access them.",
     projectsEyebrow: "02 / work",
     projectsTitle: "Projects",
     viewDetails: "View details →",
@@ -41,7 +41,12 @@ export const translations = {
   }
 };
 
-export function t(lang: string, key: string): string {
-  const translation = translations[lang]?.[key];
-  return translation !== undefined ? translation : key;
+export type SupportedLang = keyof typeof translations;
+export type TxKey = keyof typeof translations['en'];
+
+export function t(lang: string, key: TxKey): string {
+  const selectedLang = lang as SupportedLang;
+  const translation = translations[selectedLang]?.[key];
+  return translation !== undefined ? translation : translations['en']?.[key] ?? String(key);
 }
+
