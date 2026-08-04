@@ -1,6 +1,6 @@
 ---
 title: "Domain-Driven Design (DDD): A Reference Guide"
-description: "A complete reference guide to DDD — strategic design, tactical design, supporting architecture, common mistakes, and a practical application checklist."
+description: "A complete reference guide to DDD: strategic design, tactical design, supporting architecture, common mistakes, and a practical application checklist."
 pubDate: "Jul 25 2026"
 heroImage: "../../../assets/01-data-modeling.jpg"
 lang: "en"

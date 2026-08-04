@@ -1,13 +1,13 @@
 ---
 title: "Dataform (Google Cloud): A Reference Guide"
-description: "A complete reference guide to Dataform — SQLX file types, the JavaScript API, partitioning and clustering in BigQuery, best practices, and common mistakes."
+description: "A complete reference guide to Dataform: SQLX file types, the JavaScript API, partitioning and clustering in BigQuery, best practices, and common mistakes."
 pubDate: "Jul 25 2026"
 heroImage: "../../../assets/02-hadoop.jpg"
 lang: "en"
 tags: ["Data Engineering", "Dataform"]
 ---
 
-> A complete, organized summary of Dataform — file types, JavaScript API, partitioning, best practices — meant for quick day-to-day reference.
+> A complete, organized summary of Dataform: file types, JavaScript API, partitioning, best practices.
 
 ---
 

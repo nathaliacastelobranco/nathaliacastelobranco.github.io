@@ -1,36 +1,51 @@
 ---
-import { t } from '../i18n.ts';
+import { t } from "../i18n.ts";
 
 const { lang } = Astro.props;
 const today = new Date();
 
 const socials = [
-	{ label: 'github.com/nathaliacastelobranco', href: 'https://github.com/nathaliacastelobranco' },
-	{ label: 'linkedin.com/in/nathaliacastelobranco', href: 'https://linkedin.com/in/nathaliacastelobranco' },
-	{ label: 'nathaliaacbranco@gmail.com', href: 'mailto:nathaliaacbranco@gmail.com' },
+	{
+		label: "github.com/nathaliacastelobranco",
+		href: "https://github.com/nathaliacastelobranco",
+	},
+	{
+		label: "linkedin.com/in/nathaliacastelobranco",
+		href: "https://linkedin.com/in/nathaliacastelobranco",
+	},
 ];
 ---
 
 <footer id="contact" class="section">
 	<div class="contact-top">
 		<div class="contact-copy">
-			<div class="eyebrow eyebrow--pink">{t(lang, 'contactEyebrow')}</div>
-			<h2>{t(lang, 'contactTitle')}</h2>
-			<p class="contact-desc">{t(lang, 'contactDesc')}</p>
+			<div class="eyebrow eyebrow--pink">{t(lang, "contactEyebrow")}</div>
+			<h2>{t(lang, "contactTitle")}</h2>
+			<p class="contact-desc">{t(lang, "contactDesc")}</p>
 		</div>
 		<div class="contact-links mono">
-			{socials.map((social) => (
-				<a href={social.href} target={social.href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer">
-					{social.label}
-				</a>
-			))}
+			{
+				socials.map((social) => (
+					<a
+						href={social.href}
+						target={
+							social.href.startsWith("http")
+								? "_blank"
+								: undefined
+						}
+						rel="noopener noreferrer"
+					>
+						{social.label}
+					</a>
+				))
+			}
 		</div>
 	</div>
 	<div class="contact-bottom mono">
 		<span>&copy; {today.getFullYear()} Nathalia Castelo Branco</span>
 		<span class="contact-tag">
 			<span class="dot"></span>
-			{t(lang, 'footerTag')}
+			{t(lang, "footerTag")}
 		</span>
 	</div>
 </footer>

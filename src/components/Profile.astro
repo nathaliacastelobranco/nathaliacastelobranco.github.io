@@ -1,7 +1,7 @@
 ---
-import { Image } from 'astro:assets';
-import profilePhoto from '../assets/profile-photo.jpeg';
-import airflowCert from '../assets/astronomer-certification-for-apache-airflow-3-funda.png';
+import { Image } from "astro:assets";
+import profilePhoto from "../assets/profile-photo.jpeg";
+import airflowCert from "../assets/astronomer-certification-for-apache-airflow-3-funda.png";
 
 interface Props {
   lang: string;
@@ -11,62 +11,56 @@ const { lang } = Astro.props;
 
 const content = {
   en: {
-    eyebrow: '// software engineer',
-    jobTitle: 'Software Engineer',
+    eyebrow: "// software engineer",
+    jobTitle: "Software Engineer",
 
     summary:
-      'Software Engineer with a background in Civil Engineering and a Master’s in Structural Dynamics. I build software around data — designing backend services, data platforms, cloud infrastructure and automation. I use AI as a tool when it solves real problems, not as the centre of the solution.',
+      "Software Engineer with a background in Civil Engineering and a Master’s in Structural Dynamics. I build software around data — designing backend services, data platforms, cloud infrastructure and automation. ",
 
     aboutP1:
       "I hold a degree in Civil Engineering and a Master's in Structural Dynamics from UERJ. Since 2021 I've been working in software, specialising in Data Engineering while building experience across backend development, cloud infrastructure, APIs, automation and modern data platforms. My background combines postgraduate studies in Artificial Intelligence and Data Engineering at Infnet with hands-on experience delivering production systems.",
 
     aboutP2:
-      "I'm interested in how systems behave as a whole rather than in isolated technologies. Whether building a backend service, a data pipeline or a cloud architecture, I enjoy designing solutions that are reliable, maintainable and simple. AI is part of my toolbox, but software engineering is the foundation of everything I build.",
+      "I'm interested in how systems behave as a whole rather than in isolated technologies. Whether building a backend service, a data pipeline or a cloud architecture, I enjoy designing solutions that are reliable, maintainable and simple.",
 
-    ctaPrimary: 'View projects',
-    ctaSecondary: 'Get in touch',
+    ctaPrimary: "View projects",
+    ctaSecondary: "Get in touch",
 
-    photoAlt: 'Nathalia Castelo Branco',
+    photoAlt: "Nathalia Castelo Branco",
 
-    aboutEyebrow: '01 / about',
-    aboutTitle: 'About me',
-    techTitle: 'Main Technologies',
-    certifications: 'Certifications'
+    aboutEyebrow: "01 / about",
+    aboutTitle: "About me",
+    techTitle: "Main Technologies",
+    certifications: "Certifications",
   },
 
-  'pt-br': {
-    eyebrow: '// engenheira de software',
-    jobTitle: 'Engenheira de Software',
+  "pt-br": {
+    eyebrow: "// engenheira de software",
+    jobTitle: "Engenheira de Software",
 
     summary:
-      'Engenheira de Software formada em Engenharia Civil, com mestrado em Dinâmica das Estruturas. Desenvolvo software orientado a dados, unindo backend, engenharia de dados, infraestrutura em nuvem e automação. Utilizo IA como ferramenta quando ela resolve um problema real — não como o centro da solução.',
+      "Engenheira de Software formada em Engenharia Civil, com mestrado em Dinâmica das Estruturas. Desenvolvo software orientado a dados, unindo backend, engenharia de dados, infraestrutura em nuvem e automação.",
 
     aboutP1:
-      'Sou formada em Engenharia Civil, com mestrado em Dinâmica das Estruturas pela UERJ. Desde 2021 atuo com desenvolvimento de software, especializando-me em Engenharia de Dados e ampliando minha experiência em backend, infraestrutura em nuvem, APIs, automação e plataformas de dados. Minha formação inclui pós-graduações em Inteligência Artificial e Engenharia de Dados pelo Infnet, aliadas à experiência prática no desenvolvimento de sistemas em produção.',
+      "Sou formada em Engenharia Civil, com mestrado em Dinâmica das Estruturas pela UERJ. Desde 2021 atuo com desenvolvimento de software, especializando-me em Engenharia de Dados e ampliando minha experiência em backend, infraestrutura em nuvem, APIs, automação e plataformas de dados. Minha formação inclui pós-graduações em Inteligência Artificial e Engenharia de Dados pelo Infnet, aliadas à experiência prática no desenvolvimento de sistemas em produção.",
 
     aboutP2:
-      'Gosto de pensar em sistemas como um todo, e não apenas em tecnologias isoladas. Seja desenvolvendo um backend, uma plataforma de dados ou uma arquitetura em nuvem, meu objetivo é construir soluções simples, confiáveis e fáceis de evoluir. IA faz parte das ferramentas que utilizo, mas engenharia de software é a base do meu trabalho.',
+      "Gosto de pensar em sistemas como um todo, e não apenas em tecnologias isoladas. Seja desenvolvendo um backend, uma plataforma de dados ou uma arquitetura em nuvem, meu objetivo é construir soluções simples, confiáveis e fáceis de evoluir.",
 
-    ctaPrimary: 'Ver projetos',
-    ctaSecondary: 'Falar comigo',
+    ctaPrimary: "Ver projetos",
+    ctaSecondary: "Falar comigo",
 
-    photoAlt: 'Nathalia Castelo Branco',
+    photoAlt: "Nathalia Castelo Branco",
 
-    aboutEyebrow: '01 / sobre',
-    aboutTitle: 'Quem sou eu',
-    techTitle: 'Principais Tecnologias',
-    certifications: 'Certificações'
-  }
+    aboutEyebrow: "01 / sobre",
+    aboutTitle: "Quem sou eu",
+    techTitle: "Principais Tecnologias",
+    certifications: "Certificações",
+  },
 };
 
-const c = content[lang as keyof typeof content] || content['en'];
-const techs = [
-  'Python',
-  'Google Cloud',
-  'Docker',
-  'SQL',
-  'Data Engineering'
-];
+const c = content[lang as keyof typeof content] || content["en"];
+const techs = ["Python", "Google Cloud", "Docker", "SQL", "Data Engineering"];
 ---
 
 <section id="home" class="hero">
@@ -86,7 +80,14 @@ const techs = [
   </div>
   <div class="hero-photo">
     <div class="hero-photo-dashed"></div>
-    <Image src={profilePhoto} alt={c.photoAlt} width={520} height={520} loading="eager" fetchpriority="high" />
+    <Image
+      src={profilePhoto}
+      alt={c.photoAlt}
+      width={520}
+      height={520}
+      loading="eager"
+      fetchpriority="high"
+    />
   </div>
 </section>
 
@@ -107,16 +108,24 @@ const techs = [
     </div>
 
     <div class="cert-card">
-      <a href="https://www.credly.com/badges/54c0f470-be7b-4962-b5ba-f2bcdd13ee21/public_url" target="_blank" rel="noopener noreferrer" aria-label="Apache Airflow 3 Fundamentals Certification Badge on Credly">
-        <Image src={airflowCert} alt="Apache Airflow 3 Fundamentals Certification Badge" width={48} height={48} />
+      <a
+        href="https://www.credly.com/badges/54c0f470-be7b-4962-b5ba-f2bcdd13ee21/public_url"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Apache Airflow 3 Fundamentals Certification Badge on Credly"
+      >
+        <Image
+          src={airflowCert}
+          alt="Apache Airflow 3 Fundamentals Certification Badge"
+          width={48}
+          height={48}
+        />
       </a>
       <div>
         <div class="cert-title">Apache Airflow 3 Fundamentals</div>
         <div class="cert-issuer mono">Astronomer {c.certifications}</div>
       </div>
     </div>
-
-    
   </div>
 </section>
 
@@ -160,13 +169,21 @@ const techs = [
   }
 
   @keyframes ringspin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   @keyframes ringspinrev {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(-360deg); }
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(-360deg);
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {

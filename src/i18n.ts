@@ -16,8 +16,8 @@ export const translations = {
     viewAllPosts: "Ver todos os posts →",
     contactEyebrow: "04 / contato",
     contactTitle: "Vamos conversar.",
-    contactDesc: "Aberta a oportunidades em Ciência de Dados e IA aplicada. Envie uma mensagem ou me encontre nas redes abaixo.",
-    footerTag: "feito com intenção"
+    contactDesc: "Envie uma mensagem ou me encontre nas redes ao lado.",
+    footerTag: "feito com <3"
   },
   en: {
     home: "Home",
@@ -36,8 +36,8 @@ export const translations = {
     viewAllPosts: "View all posts →",
     contactEyebrow: "04 / contact",
     contactTitle: "Let's talk.",
-    contactDesc: "Open to opportunities in Data Science and applied AI. Send a message or find me on the networks below.",
-    footerTag: "built with intention"
+    contactDesc: "Send a message or find me on the networks on the side.",
+    footerTag: "built with <3"
   }
 };
 
